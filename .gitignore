@@ -1,0 +1,13 @@
+target/
+.project
+.classpath
+.settings/
+test-output/
+*.iml
+*.ipr
+*.iws
+.idea/
+/data/
+.DS_Store
+ripple.log
+blueprints.log
