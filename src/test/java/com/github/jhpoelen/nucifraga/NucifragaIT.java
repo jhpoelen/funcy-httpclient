@@ -73,8 +73,8 @@ public class NucifragaIT {
         HttpResponse secondResponse = httpClient.execute(request);
         long secondDelay = stopWatch.getTime();
         stopWatch.stop();
-        assertThat("expected second delay [" + secondDelay + "] ms to be at least 10x shorter than first [" + firstDelay + "] ms",
-                secondDelay, is(lessThan(firstDelay / 5)));
+        assertThat("expected second delay [" + secondDelay + "] ms to be at least 2x shorter than first [" + firstDelay + "] ms",
+                secondDelay, is(lessThan(firstDelay / 2)));
         assertThat(secondResponse.getAllHeaders().length, is(firstResponse.getAllHeaders().length));
         Header[] allHeaders = secondResponse.getAllHeaders();
         for (Header allHeader : allHeaders) {
