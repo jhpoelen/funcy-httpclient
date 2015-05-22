@@ -1,4 +1,4 @@
-package org.eol.globi.util;
+package com.github.jhpoelen.nucifraga;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;

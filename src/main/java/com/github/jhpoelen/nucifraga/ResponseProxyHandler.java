@@ -1,4 +1,4 @@
-package org.eol.globi.util;
+package com.github.jhpoelen.nucifraga;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpEntity;

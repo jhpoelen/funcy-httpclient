@@ -1,4 +1,4 @@
-package org.eol.globi.util;
+package com.github.jhpoelen.nucifraga;
 
 import com.Ostermiller.util.MD5;
 import com.Ostermiller.util.MD5OutputStream;
@@ -10,7 +10,6 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
-import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.conn.routing.RouteInfo;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.message.BasicHttpResponse;

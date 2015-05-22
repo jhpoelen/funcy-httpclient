@@ -1,4 +1,4 @@
-# funcy-httpclient
+# nucifraga
 a httpclient that replays initial response to a request
 
 # why?
@@ -13,6 +13,8 @@ reproduce results using these apis, the responses have to be saved so that they 
 Note that archiving is very different from caching. Http caching is part of the (http specification)[http://www.w3.org/Protocols/rfc2616/rfc2616-sec13.html]
 and allows for servers to tell their clients which content that may be cached and for how long.
 
+The name [nucifraga](http://eol.org/pages/92861/overview) is the scientific name of a genus of bird commonly referred to as [nutcrackers](http://eol.org/pages/92861/overview). These birds are pretty good at located thousands of nuts that they buried earlier. Thanks to [Owen Pietrokowsky](http://rightbrainscience.wordpress.com) for helping come up with the name.
+
 # how does it work?
 New http requests and their responses are saved in directories. On repeat request, the saved responses are read from disk and returned to the client.
 
@@ -21,8 +23,7 @@ This library is built on [Apache's HttpClient](http://hc.apache.org/httpcomponen
 # how to use?
 
 ```java
-HttpClientBuilder clientBuilder = FuncyHttpClientBuilder.create();
-HttpClient client = clientBuilder.build();
+HttpClient client = Nucifraga.create().build();
 
 String firstResponse = client.execute(new HttpGet("http://www.timeapi.org/utc/now"), new BasicResponseHandler());
 String secondResponse = client.execute(new HttpGet("http://www.timeapi.org/utc/now"), new BasicResponseHandler());
@@ -30,7 +31,7 @@ String secondResponse = client.execute(new HttpGet("http://www.timeapi.org/utc/n
 
 
 // configure archive directories
-clientBuilder = FuncyHttpClientBuilder.create()
+clientBuilder = Nucifraga.create()
     .setEntityDir(new File("archive/entity"))
     .setResponseRequestDir(new File("archive/request-response"));
 

@@ -1,4 +1,4 @@
-package org.eol.globi.util;
+package com.github.jhpoelen.nucifraga;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
@@ -20,13 +20,13 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 
-public class FuncyHttpClientBuilderIT {
+public class NucifragaIT {
 
-    private FuncyHttpClientBuilder clientBuilder;
+    private Nucifraga clientBuilder;
 
     @Before
     public void clean() throws IOException {
-        clientBuilder = FuncyHttpClientBuilder.create()
+        clientBuilder = Nucifraga.create()
                 .setEntityDir(new File("target/test-archive/http-entity/"))
                 .setRequestionResponseDir(new File("target/test-archive/http-request-response/"));
         clientBuilder.clean();

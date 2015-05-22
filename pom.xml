@@ -4,11 +4,11 @@
     <modelVersion>4.0.0</modelVersion>
 
 
-    <artifactId>funcy-httpclient</artifactId>
+    <artifactId>nucifraga</artifactId>
     <groupId>com.github.jhpoelen</groupId>
-    <version>1.0-SNAPSHOT</version>
+    <version>0.1-SNAPSHOT</version>
 
-    <name>funcy-httpclient</name>
+    <name>nucifraga</name>
     <description>a http client that replays initial response to a request</description>
     <properties>
         <httpcomponents.version>4.3.6</httpcomponents.version>
@@ -87,4 +87,24 @@
             </plugin>
         </plugins>
     </build>
+
+    <scm>
+        <connection>scm:git:git@github.com:jhpoelen/eol-globi-data.git</connection>
+        <url>scm:git:git@github.com:jhpoelen/eol-globi-data.git</url>
+        <developerConnection>scm:git:git@github.com:jhpoelen/eol-globi-data</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
+
+    <distributionManagement>
+        <repository>
+            <id>globi-release</id>
+            <name>AWS Release Repository</name>
+            <url>s3://globi/release</url>
+        </repository>
+        <snapshotRepository>
+            <id>globi-snapshot</id>
+            <name>AWS Snapshot Repository</name>
+            <url>s3://globi/snapshot</url>
+        </snapshotRepository>
+    </distributionManagement>
 </project>

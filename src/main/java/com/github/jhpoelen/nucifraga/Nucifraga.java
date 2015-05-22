@@ -1,4 +1,4 @@
-package org.eol.globi.util;
+package com.github.jhpoelen.nucifraga;
 
 import org.apache.http.HttpException;
 import org.apache.http.HttpResponse;
@@ -16,14 +16,14 @@ import org.apache.http.protocol.HttpContext;
 import java.io.File;
 import java.io.IOException;
 
-public class FuncyHttpClientBuilder extends HttpClientBuilder {
+public class Nucifraga extends HttpClientBuilder {
 
     private File entityDir = new File("http-archive/entity/");
     private File requestResponseDir = new File("http-archive/request-response/");
 
 
-    public static FuncyHttpClientBuilder create() {
-        final FuncyHttpClientBuilder builder = new FuncyHttpClientBuilder();
+    public static Nucifraga create() {
+        final Nucifraga builder = new Nucifraga();
         builder
                 .addInterceptorLast(new HttpResponseInterceptor() {
                     public void process(
@@ -52,12 +52,12 @@ public class FuncyHttpClientBuilder extends HttpClientBuilder {
         HttpMessagePersistUtil.clean(getEntityDir(), getRequestResponseDir());
     }
 
-    public FuncyHttpClientBuilder setEntityDir(final File entityDir) {
+    public Nucifraga setEntityDir(final File entityDir) {
         this.entityDir = entityDir;
         return this;
     }
 
-    public FuncyHttpClientBuilder setRequestionResponseDir(final File requestResponseDir) {
+    public Nucifraga setRequestionResponseDir(final File requestResponseDir) {
         this.requestResponseDir = requestResponseDir;
         return this;
     }
