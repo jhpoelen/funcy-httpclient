@@ -2,7 +2,7 @@
 a httpclient that replays initial response to a request
 
 # why?
-Web resources are great, but they change over time. The funcy-httpclient archives http request-response pairs.
+Web resources are great, but they change over time. The nucifraga archives http request-response pairs.
 On executing a request that has a response in the archive, the archived response is returned. This mean that
 the client is [purely functional](http://en.wikipedia.org/wiki/Purely_functional): given a specific input, it always
 returns the same output.
