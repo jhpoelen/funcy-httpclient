@@ -5,7 +5,7 @@
 
     <artifactId>nucifraga</artifactId>
     <groupId>com.github.jhpoelen</groupId>
-    <version>0.3</version>
+    <version>0.4-SNAPSHOT</version>
 
     <name>nucifraga</name>
     <description>a http client that replays initial response to a request</description>
@@ -106,7 +106,7 @@
         <connection>scm:git:git@github.com:jhpoelen/nucifraga.git</connection>
         <url>scm:git:git@github.com:jhpoelen/nucifraga.git</url>
         <developerConnection>scm:git:git@github.com:jhpoelen/nucifraga</developerConnection>
-        <tag>v0.3</tag>
+        <tag>HEAD</tag>
     </scm>
 
     <distributionManagement>
