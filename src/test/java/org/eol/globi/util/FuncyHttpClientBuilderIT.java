@@ -1,8 +1,8 @@
 package org.eol.globi.util;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.time.StopWatch;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.StopWatch;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -10,7 +10,6 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.entity.StringEntity;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -33,7 +32,7 @@ public class FuncyHttpClientBuilderIT {
         clientBuilder.clean();
     }
 
-    @After
+    //@After
     public void cleanup() throws IOException {
         clientBuilder.clean();
     }
@@ -58,8 +57,8 @@ public class FuncyHttpClientBuilderIT {
 
     @Test
     public void cachingForSSL() throws IOException {
-        String nonCacheableUri = "https://www.google.com";
-        assertArchiving(new HttpGet(nonCacheableUri));
+        assertArchiving(new HttpGet("https://www.google.com"));
+        assertArchiving(new HttpGet("http://www.google.com"));
     }
 
     protected void assertArchiving(HttpUriRequest request) throws IOException {

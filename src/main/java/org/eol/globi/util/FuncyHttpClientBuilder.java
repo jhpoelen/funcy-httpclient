@@ -30,8 +30,8 @@ public class FuncyHttpClientBuilder extends HttpClientBuilder {
                             final HttpResponse response,
                             final HttpContext context) throws HttpException, IOException {
                         HttpClientContext clientContext = HttpClientContext.adapt(context);
-                        HttpMessagePersistUtil.persist(clientContext.getRequest(), response, builder.getEntityDir(), builder.getRequestResponseDir());
-                        CloseableHttpResponse archivedResponse = HttpMessagePersistUtil.respondTo(clientContext.getRequest(), builder.getEntityDir(), builder.getRequestResponseDir());
+                        HttpMessagePersistUtil.persist(clientContext.getHttpRoute(), clientContext.getRequest(), response, builder.getEntityDir(), builder.getRequestResponseDir());
+                        CloseableHttpResponse archivedResponse = HttpMessagePersistUtil.respondTo(clientContext.getHttpRoute(), clientContext.getRequest(), builder.getEntityDir(), builder.getRequestResponseDir());
                         response.setEntity(new InputStreamEntity(archivedResponse.getEntity().getContent()));
                     }
                 });
@@ -42,7 +42,7 @@ public class FuncyHttpClientBuilder extends HttpClientBuilder {
     protected ClientExecChain decorateMainExec(final ClientExecChain mainExec) {
         return new ClientExecChain() {
             public CloseableHttpResponse execute(HttpRoute route, HttpRequestWrapper request, HttpClientContext clientContext, HttpExecutionAware execAware) throws IOException, HttpException {
-                CloseableHttpResponse resp = HttpMessagePersistUtil.respondTo(request, getEntityDir(), getRequestResponseDir());
+                CloseableHttpResponse resp = HttpMessagePersistUtil.respondTo(route, request, getEntityDir(), getRequestResponseDir());
                 return resp == null ? mainExec.execute(route, request, clientContext, execAware) : resp;
             }
         };

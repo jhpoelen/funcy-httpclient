@@ -2,15 +2,18 @@ package org.eol.globi.util;
 
 import org.apache.http.Header;
 import org.apache.http.HttpEntityEnclosingRequest;
+import org.apache.http.HttpHost;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.conn.routing.HttpRoute;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.message.BasicHttpEntityEnclosingRequest;
 import org.apache.http.message.BasicHttpResponse;
 import org.apache.http.message.BasicRequestLine;
 import org.apache.http.message.BasicStatusLine;
+import org.hamcrest.Matchers;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,14 +30,10 @@ import java.util.Set;
 
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.nullValue;
-import static org.hamcrest.Matchers.arrayContainingInAnyOrder;
-import static org.hamcrest.Matchers.arrayWithSize;
 import static org.hamcrest.Matchers.containsInAnyOrder;
-import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.core.Is.is;
 import static org.hamcrest.core.IsNull.notNullValue;
 import static org.junit.Assert.assertThat;
-import static org.junit.matchers.JUnitMatchers.everyItem;
 
 public class HttpMessagePersistUtilTest {
 
@@ -110,11 +109,14 @@ public class HttpMessagePersistUtilTest {
 
     @Test
     public void persistRequestResponse() throws IOException {
-        assertThat(HttpMessagePersistUtil.respondTo(testRequest(), ENTITY_DEST_DIR, REQ_RES_DEST_DIR), is(nullValue()));
+        HttpRoute testRoute = new HttpRoute(new HttpHost("goo", 80, "http"));
+        HttpRoute anotherTestRoute = new HttpRoute(new HttpHost("goo", 443, "https"));
+        assertThat(HttpMessagePersistUtil.respondTo(testRoute, testRequest(), ENTITY_DEST_DIR, REQ_RES_DEST_DIR), is(nullValue()));
         HttpEntityEnclosingRequest req = testRequest();
         HttpResponse res = testResponse();
-        HttpMessagePersistUtil.persist(req, res, ENTITY_DEST_DIR, REQ_RES_DEST_DIR);
-        CloseableHttpResponse archivedRes = HttpMessagePersistUtil.respondTo(testRequest(), ENTITY_DEST_DIR, REQ_RES_DEST_DIR);
+        HttpMessagePersistUtil.persist(testRoute, req, res, ENTITY_DEST_DIR, REQ_RES_DEST_DIR);
+        assertThat(HttpMessagePersistUtil.respondTo(anotherTestRoute, testRequest(), ENTITY_DEST_DIR, REQ_RES_DEST_DIR), is(Matchers.nullValue()));
+        CloseableHttpResponse archivedRes = HttpMessagePersistUtil.respondTo(testRoute, testRequest(), ENTITY_DEST_DIR, REQ_RES_DEST_DIR);
         assertThat(archivedRes, is(notNullValue()));
 
         assertThat(res.getAllHeaders().length, is(res.getAllHeaders().length));

@@ -10,6 +10,8 @@ import org.apache.http.HttpRequest;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpVersion;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.conn.routing.HttpRoute;
+import org.apache.http.conn.routing.RouteInfo;
 import org.apache.http.entity.InputStreamEntity;
 import org.apache.http.message.BasicHttpResponse;
 import org.yaml.snakeyaml.Yaml;
@@ -35,7 +37,9 @@ public class HttpMessagePersistUtil {
             for (final Header header : allHeaders) {
                 List<String> values = resHeader.get(header.getName());
                 if (values == null) {
-                    resHeader.put(header.getName(), new ArrayList<String>() {{ add(header.getValue()); }} );
+                    resHeader.put(header.getName(), new ArrayList<String>() {{
+                        add(header.getValue());
+                    }});
                 } else {
                     values.add(header.getValue());
                 }
@@ -56,34 +60,53 @@ public class HttpMessagePersistUtil {
         }};
     }
 
-    public static void persist(final HttpRequest req, final HttpResponse res, final File entityDestDir, File reqResDestDir) throws IOException {
-        String requestHash = calculateRequestHash(req, entityDestDir);
+    public static void persist(final RouteInfo route, final HttpRequest req, final HttpResponse res, final File entityDestDir, File reqResDestDir) throws IOException {
+        String requestHash = calculateRequestHash(route, req, entityDestDir);
 
         final Map<String, Object> reqRes = new TreeMap<String, Object>() {
             {
                 put("response", responseToMap(res, entityDestDir));
                 put("request", requestToMap(req, entityDestDir, null));
+                put("route", routeToMap(route));
             }
         };
         persistStream(IOUtils.toInputStream(new Yaml().dump(reqRes)), reqResDestDir, requestHash);
     }
 
-    public static String calculateRequestHash(HttpRequest req, File entityDestDir) throws IOException {
-        final Map<String, Object> reqMap = requestToMap(req, entityDestDir, Arrays.asList("Host", "Accept-Encoding", "http.target_host"));
-        return MD5.getHashString(new Yaml().dump(reqMap), "UTF-8");
+    public static String calculateRequestHash(final RouteInfo route, final HttpRequest req, final File entityDestDir) throws IOException {
+        Map<String, Object> map = new TreeMap<String, Object> () {{
+            put("response", requestToMap(req, entityDestDir, Arrays.asList("Host", "Accept-Encoding", "http.target_host")));
+            put("route", routeToMap(route));
+        }
+        };
+        return MD5.getHashString(new Yaml().dump(map), "UTF-8");
+    }
+
+    private static Map<String, String> routeToMap(final RouteInfo route) {
+        return new TreeMap<String, String>() {{
+                put("targetHost", route.getTargetHost().toURI());
+            }
+            };
     }
 
     protected static Map<String, Object> requestToMap(final HttpRequest req, final File destDir, final List<String> includeHeaders) throws IOException {
         return new TreeMap<String, Object>() {
             {
-                Map<String, String> resHeader = new TreeMap<String, String>();
+                Map<String, List<String>> reqHeader = new TreeMap<String, List<String>>();
                 Header[] allHeaders = req.getAllHeaders();
-                for (Header header : allHeaders) {
+                for (final Header header : allHeaders) {
                     if (includeHeaders == null || includeHeaders.contains(header.getName())) {
-                        resHeader.put(header.getName(), header.getValue());
+                        List<String> values = reqHeader.get(header.getName());
+                        if (values == null) {
+                            reqHeader.put(header.getName(), new ArrayList<String>() {{
+                                add(header.getValue());
+                            }});
+                        } else {
+                            values.add(header.getValue());
+                        }
                     }
                 }
-                put("header", resHeader);
+                put("header", reqHeader);
 
                 if (req instanceof HttpEntityEnclosingRequest) {
                     HttpEntityEnclosingRequest entityReq = (HttpEntityEnclosingRequest) req;
@@ -128,9 +151,9 @@ public class HttpMessagePersistUtil {
         return hashString;
     }
 
-    public static CloseableHttpResponse respondTo(HttpRequest request, File entityDestDir, File reqResDestDir) throws IOException {
+    public static CloseableHttpResponse respondTo(final RouteInfo route, final HttpRequest request, final File entityDestDir, File reqResDestDir) throws IOException {
         CloseableHttpResponse resp = null;
-        String requestHash = calculateRequestHash(request, entityDestDir);
+        String requestHash = calculateRequestHash(route, request, entityDestDir);
         File persistedRequestResponseFile = new File(reqResDestDir, requestHash);
         if (persistedRequestResponseFile.exists()) {
             TreeMap<String, Object> load = new Yaml().loadAs(new FileInputStream(persistedRequestResponseFile), new TreeMap<String, Object>().getClass());
