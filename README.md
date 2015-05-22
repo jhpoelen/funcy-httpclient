@@ -39,6 +39,6 @@ clientBuilder.clean();
 ```
 
 # related project
-If you are looking for libraries specifically geared towards testing, please see (Betamax)[https://github.com/robfletcher/betamax].
+If you are looking for libraries specifically geared towards testing, please see [Betamax](https://github.com/robfletcher/betamax) .
 
-If you are looking for a http client that implements "formal" http caching, see [Apache's HttpClient] Cache](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/caching.html).
+If you are looking for a http client that implements "formal" http caching, see [Apache HttpClient Cache](http://hc.apache.org/httpcomponents-client-ga/tutorial/html/caching.html).
