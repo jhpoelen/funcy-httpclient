@@ -10,7 +10,7 @@
     <name>nucifraga</name>
     <description>a http client that replays initial response to a request</description>
     <properties>
-        <httpcomponents.version>4.3.6</httpcomponents.version>
+        <httpcomponents.version>4.5.13</httpcomponents.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.build.resourceEncoding>UTF-8</project.build.resourceEncoding>
         <project.build.testResourceEncoding>UTF-8</project.build.testResourceEncoding>
