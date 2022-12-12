@@ -1,3 +1,5 @@
+:warning: Not maintained. Archived for future reference. Please see https://github.com/bio-guoda/preston for tracking digital resources.
+
 # nucifraga
 a httpclient that replays initial response to a request
 
